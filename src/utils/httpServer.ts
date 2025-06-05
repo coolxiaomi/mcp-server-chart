@@ -92,12 +92,13 @@ function setupCleanupHandlers(
  */
 function logServerStartup(
   serverType: string,
+  host: string,
   port: number,
   endpoint: string,
 ): void {
-  const serverUrl = `http://localhost:${port}${endpoint}`;
-  const healthUrl = `http://localhost:${port}/health`;
-  const pingUrl = `http://localhost:${port}/ping`;
+  const serverUrl = `http://${host}:${port}${endpoint}`;
+  const healthUrl = `http://${host}:${port}/health`;
+  const pingUrl = `http://${host}:${port}/ping`;
 
   console.log(
     `${serverType} running on: \x1b[32m\u001B[4m${serverUrl}\u001B[0m\x1b[0m`,
@@ -111,6 +112,7 @@ function logServerStartup(
  * Creates a base HTTP server with common functionality
  */
 export function createBaseHttpServer(
+  host: string,
   port: number,
   endpoint: string,
   handlers: RequestHandlers,
@@ -141,8 +143,8 @@ export function createBaseHttpServer(
   setupCleanupHandlers(httpServer, handlers.cleanup);
 
   // Start listening and log server info
-  httpServer.listen(port, () => {
-    logServerStartup(handlers.serverType, port, endpoint);
+  httpServer.listen(port, host, () => {
+    logServerStartup(handlers.serverType, host, port, endpoint);
   });
 
   return httpServer;

@@ -15,6 +15,7 @@ import {
 
 export const startHTTPStreamableServer = async (
   createServer: () => Server,
+  host = "0.0.0.0",
   endpoint = "/mcp",
   port = 1122,
   eventStore: EventStore = new InMemoryEventStore(),
@@ -37,7 +38,7 @@ export const startHTTPStreamableServer = async (
       return;
     }
 
-    const reqUrl = new URL(req.url, "http://localhost");
+    const reqUrl = new URL(req.url, "http://" + host);
 
     // Handle POST requests to endpoint
     if (req.method === "POST" && reqUrl.pathname === endpoint) {
@@ -144,9 +145,9 @@ export const startHTTPStreamableServer = async (
       const sessionId = req.headers["mcp-session-id"] as string | undefined;
       const activeTransport:
         | {
-            server: Server;
-            transport: StreamableHTTPServerTransport;
-          }
+          server: Server;
+          transport: StreamableHTTPServerTransport;
+        }
         | undefined = sessionId ? activeTransports[sessionId] : undefined;
 
       if (!sessionId) {
@@ -210,7 +211,7 @@ export const startHTTPStreamableServer = async (
   };
 
   // Create the HTTP server using our factory
-  createBaseHttpServer(port, endpoint, {
+  createBaseHttpServer(host, port, endpoint, {
     handleRequest,
     cleanup,
     serverType: "HTTP Streamable Server",

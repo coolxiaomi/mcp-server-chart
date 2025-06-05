@@ -5,6 +5,7 @@ import { type RequestHandlers, createBaseHttpServer } from "../utils";
 
 export const startSSEMcpServer = async (
   server: Server,
+  host = "0.0.0.0",
   endpoint = "/sse",
   port = 1122,
 ): Promise<void> => {
@@ -20,7 +21,7 @@ export const startSSEMcpServer = async (
       return;
     }
 
-    const reqUrl = new URL(req.url, "http://localhost");
+    const reqUrl = new URL(req.url, "http://" + host);
 
     // Handle GET requests to the SSE endpoint
     if (req.method === "GET" && reqUrl.pathname === endpoint) {
@@ -99,7 +100,7 @@ export const startSSEMcpServer = async (
   };
 
   // Create the HTTP server using our factory
-  createBaseHttpServer(port, endpoint, {
+  createBaseHttpServer(host, port, endpoint, {
     handleRequest,
     cleanup,
     serverType: "SSE Server",

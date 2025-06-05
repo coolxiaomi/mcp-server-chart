@@ -1,4 +1,5 @@
-FROM node:lts-alpine
+# FROM node:lts-alpine
+FROM swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/library/node:22.9.0
 
 WORKDIR /app
 
@@ -14,5 +15,6 @@ COPY . .
 # Build the application
 RUN npm run build
 
+EXPOSE 1122
 # Command will be provided by smithery.yaml
-CMD ["node", "build/index.js"]
+CMD ["node", "build/index.js","--transport","sse"]
