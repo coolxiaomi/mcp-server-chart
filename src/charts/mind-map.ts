@@ -1,10 +1,10 @@
 import { z } from "zod";
 import { zodToJsonSchema } from "../utils";
+import { type TreeDataType, validatedTreeDataSchema } from "../utils/validator";
 import { HeightSchema, ThemeSchema, WidthSchema } from "./base";
 
 // Mind map node schema
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-const MindMapNodeSchema: z.ZodType<any> = z.lazy(() =>
+const MindMapNodeSchema: z.ZodType<TreeDataType> = z.lazy(() =>
   z.object({
     name: z.string(),
     children: z.array(MindMapNodeSchema).optional(),
@@ -12,14 +12,17 @@ const MindMapNodeSchema: z.ZodType<any> = z.lazy(() =>
 );
 
 // Mind map chart input schema
-const schema = z.object({
+const schema = {
   data: MindMapNodeSchema.describe(
     "Data for mind map chart, such as, { name: 'main topic', children: [{ name: 'topic 1', children: [{ name:'subtopic 1-1' }] }.",
-  ),
+  ).refine(validatedTreeDataSchema, {
+    message: "Invalid parameters: node name is not unique.",
+    path: ["data"],
+  }),
   theme: ThemeSchema,
   width: WidthSchema,
   height: HeightSchema,
-});
+};
 
 // Mind map chart tool descriptor
 const tool = {

@@ -2,9 +2,13 @@ import { z } from "zod";
 import { zodToJsonSchema } from "../utils";
 import { HeightSchema, ThemeSchema, TitleSchema, WidthSchema } from "./base";
 
+type TreemapDataType = {
+  name: string;
+  value: number;
+  children?: TreemapDataType[];
+};
 // Define recursive schema for hierarchical data
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-const TreeNodeSchema: z.ZodType<any> = z.lazy(() =>
+const TreeNodeSchema: z.ZodType<TreemapDataType> = z.lazy(() =>
   z.object({
     name: z.string(),
     value: z.number(),
@@ -13,7 +17,7 @@ const TreeNodeSchema: z.ZodType<any> = z.lazy(() =>
 );
 
 // Treemap chart input schema
-const schema = z.object({
+const schema = {
   data: z
     .array(TreeNodeSchema)
     .describe(
@@ -24,7 +28,7 @@ const schema = z.object({
   width: WidthSchema,
   height: HeightSchema,
   title: TitleSchema,
-});
+};
 
 // Treemap chart tool descriptor
 const tool = {

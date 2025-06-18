@@ -1,18 +1,28 @@
 /**
  * export all charts as named exports to match the chart type
  */
-export { area as "area" } from "./area";
-export { bar as "bar" } from "./bar";
-export { column as "column" } from "./column";
+export { area } from "./area";
+export { bar } from "./bar";
+export { boxplot } from "./boxplot";
+export { column } from "./column";
+export { districtMap as "district-map" } from "./district-map";
+export { dualAxes as "dual-axes" } from "./dual-axes";
 export { fishboneDiagram as "fishbone-diagram" } from "./fishbone-diagram";
 export { flowDiagram as "flow-diagram" } from "./flow-diagram";
-export { histogram as "histogram" } from "./histogram";
-export { line as "line" } from "./line";
+export { funnel } from "./funnel";
+export { histogram } from "./histogram";
+export { line } from "./line";
+export { liquid } from "./liquid";
 export { mindMap as "mind-map" } from "./mind-map";
 export { networkGraph as "network-graph" } from "./network-graph";
-export { pie as "pie" } from "./pie";
-export { radar as "radar" } from "./radar";
-export { scatter as "scatter" } from "./scatter";
-export { treemap as "treemap" } from "./treemap";
+export { organizationChart as "organization-chart" } from "./organization-chart";
+export { pathMap as "path-map" } from "./path-map";
+export { pie } from "./pie";
+export { pinMap as "pin-map" } from "./pin-map";
+export { radar } from "./radar";
+export { sankey } from "./sankey";
+export { scatter } from "./scatter";
+export { treemap } from "./treemap";
+export { venn } from "./venn";
+export { violin } from "./violin";
 export { wordCloud as "word-cloud" } from "./word-cloud";
-export { dualAxes as "dual-axes" } from "./dual-axes";

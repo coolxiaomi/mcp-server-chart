@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { zodToJsonSchema } from "../utils";
+import { validatedNodeEdgeDataSchema } from "../utils/validator";
 import {
   EdgeSchema,
   HeightSchema,
@@ -9,7 +10,7 @@ import {
 } from "./base";
 
 // Network graph input schema
-const schema = z.object({
+const schema = {
   data: z
     .object({
       nodes: z
@@ -19,11 +20,15 @@ const schema = z.object({
     })
     .describe(
       "Data for network graph chart, such as, { nodes: [{ name: 'node1' }, { name: 'node2' }], edges: [{ source: 'node1', target: 'node2', name: 'edge1' }] }",
-    ),
+    )
+    .refine(validatedNodeEdgeDataSchema, {
+      message: "Invalid parameters",
+      path: ["data", "edges"],
+    }),
   theme: ThemeSchema,
   width: WidthSchema,
   height: HeightSchema,
-});
+};
 
 // Network graph tool descriptor
 const tool = {
